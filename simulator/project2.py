@@ -26,7 +26,7 @@ class Builder(object):
     def __init__(self, memdet):
        """Initialize some date strutures used by the simulation"""
        self.memdet = memdet
-       self.frames = collections.OrderedDict.fromkeys(range(memdet))
+       self.frames = collections.OrderedDict.fromkeys(range(memdet), 'Empty')
        self.pages = []
 
     def frame_builder(self, procid, txtpages, datpages):
@@ -53,12 +53,12 @@ class Builder(object):
        #Iterate over all the frames
        for spaces in range(0, self.memdet, 1):
                 #Place all of the necessary text pages in the first empties
-                if(self.frames[spaces] is None  and i < int(txtpages)):
+                if(self.frames[spaces] is 'Empty'  and i < int(txtpages)):
                     self.frames[spaces] = [procid, "TextPage " +str (i)] 
                     i += 1
                     self.page_builder(self.frames[spaces], spaces)
                 #Then do all of the data pages
-                elif(self.frames[spaces] is None  and k < int(datpages)):
+                elif(self.frames[spaces] is 'Empty'  and k < int(datpages)):
                     self.frames[spaces] = [procid, "DataPage " + str(k)] 
                     k += 1
                     self.page_builder(self.frames[spaces], spaces)
@@ -79,7 +79,7 @@ class Builder(object):
         """
 
         #Dictionary for process does not exise so create it
-        if not any(d.get(frameinfo[0], None) for d in self.pages):
+        if not any(d.get(frameinfo[0], 'Empty') for d in self.pages):
             t = {frameinfo[0] :  [str(frameinfo[1] +  " in Frame " + str(framenum))]}
             self.pages.append(t.copy())
         
@@ -98,10 +98,10 @@ class Builder(object):
         print victim
         for frames in self.frames:
 
-            if(self.frames[frames][0] != None):
+            if(self.frames[frames][0] != 'Empty'):
 
                 if self.frames[frames][0] is victim:
-                    self.frames[frames] = None
+                    self.frames[frames] = 'Empty' 
        
         #Find the dictionary that corresponds to victim. Delete it.
         for v in self.pages:
@@ -160,7 +160,7 @@ class Simulate(object):
                 i = 0
                 #Visualize the frame table using strings
                 while(i < 8):
-                    if(self.build.frames[i] is not None ):
+                    if(self.build.frames[i] is not 'Empty' ):
                         print "Frame " + str(i) + " Process " + str(self
                                 .build.frames[i][0]) + " "  + self.build.frames[i][1]
                     else:
@@ -176,7 +176,7 @@ class Simulate(object):
                 i = 0
                 #Visualize the frame table using strings
                 while(i < 8):
-                    if(self.build.frames[i] is not None):
+                    if(self.build.frames[i] is not 'Empty'):
                         print "Frame " + str(i) + " Process " + str(self
                                 .build.frames[i][0]) + " "  + self.build.frames[i][1]
                     else:
