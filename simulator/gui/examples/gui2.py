@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+from Tkinter import *
+
+root = Tk()
+
+one = Label(root, text ="One", bg="red", fg="white")
+one.pack()
+two = Label(root, text ="Two", bg="white", fg="black")
+two.pack(fill=X)
+three = Label(root, text ="Three", bg="blue", fg="white")
+three.pack(side=LEFT, fill=Y)
+
+root.mainloop()
